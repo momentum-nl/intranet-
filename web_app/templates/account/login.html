@@ -2,7 +2,7 @@
 {% load static socialaccount %}
 {% block title %}Inloggen{% endblock %}
 {% block body %}
-<div class="hero min-h-screen flex flex-col text-deep">
+<div class="hero min-h-screen flex flex-col text-black">
   <div class="hero__vector" aria-hidden="true"><div class="hero__lottie js-lottie"></div></div>
   <header class="relative z-10 px-6 sm:px-10 py-6">
     <img src="{% static 'momentum-logo.svg' %}" alt="Momentum" class="h-6">
@@ -13,7 +13,7 @@
         <span class="block font-normal">Hoi collega,</span>
         <span class="block font-medium">welkom terug.</span>
       </h1>
-      <p class="font-serif text-[20px] leading-[35px] sm:text-2xl sm:leading-[42px] mt-8 text-deep/80">Het intranet van Momentum. Alles op één plek.</p>
+      <p class="font-serif text-[20px] leading-[35px] sm:text-2xl sm:leading-[42px] mt-8">Het intranet van Momentum. Alles op één plek.</p>
 
       {% if form.non_field_errors %}
         <div class="mt-8 inline-block rounded-xl bg-white/70 px-4 py-2 text-sm text-danger">{% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
