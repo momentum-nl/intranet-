@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% block title %}Corvee{% endblock %}
 {% block content %}
-<h1 class="text-2xl font-semibold mb-6">Corvee</h1>
+<p class="eyebrow mb-3">Samen schoon</p>
+<h1 class="page-title mb-10">Corvee</h1>
 <div class="grid md:grid-cols-3 gap-6">
   <section class="md:col-span-2 space-y-6">
     <div class="card">
@@ -10,55 +11,55 @@
         <thead><tr><th class="th">Week</th><th class="th">Taak</th><th class="th">Wie</th></tr></thead>
         <tbody>
           {% for a in upcoming %}
-          <tr class="{% if a.week_start == this_week %}bg-primary-light/50{% endif %}">
-            <td class="td whitespace-nowrap">{{ a.week_start|date:"j M" }}{% if a.week_start == this_week %} <span class="tag bg-primary text-white">nu</span>{% endif %}</td>
-            <td class="td">{{ a.chore.name }}</td>
-            <td class="td font-medium">{{ a.user.display_name }}</td>
+          <tr>
+            <td class="td whitespace-nowrap font-serif">{{ a.week_start|date:"j M" }}{% if a.week_start == this_week %} <span class="tag ml-1">nu</span>{% endif %}</td>
+            <td class="td font-serif">{{ a.chore.name }}</td>
+            <td class="td font-display font-medium">{{ a.user.display_name }}</td>
           </tr>
-          {% empty %}<tr><td class="td text-muted" colspan="3">Niets ingepland. Plan corvee in via Beheer.</td></tr>{% endfor %}
+          {% empty %}<tr><td class="td prose-serif" colspan="3">Niets ingepland. Plan corvee in via Beheer.</td></tr>{% endfor %}
         </tbody>
       </table>
     </div>
 
     <div class="card">
-      <h2 class="section">Beoordelen (afgelopen weken)</h2>
-      <p class="text-sm text-muted mb-3">1 = ramp, 5 = brandschoon. Eigen corvee kun je niet beoordelen.</p>
+      <h2 class="section">Beoordelen</h2>
+      <p class="prose-serif mb-5">Afgelopen weken. 1 is een ramp, 5 is brandschoon. Eigen corvee kun je niet beoordelen.</p>
       <table class="w-full">
         <thead><tr><th class="th">Week</th><th class="th">Taak</th><th class="th">Wie</th><th class="th">Gem.</th><th class="th">Jouw score</th></tr></thead>
         <tbody>
           {% for a in history %}
           <tr>
-            <td class="td whitespace-nowrap">{{ a.week_start|date:"j M" }}</td>
-            <td class="td">{{ a.chore.name }}</td>
-            <td class="td font-medium">{{ a.user.display_name }}</td>
-            <td class="td tabular-nums">{% if a.avg_score %}{{ a.avg_score|floatformat:1 }} <span class="text-muted text-xs">({{ a.n_ratings }})</span>{% else %}–{% endif %}</td>
+            <td class="td whitespace-nowrap font-serif">{{ a.week_start|date:"j M" }}</td>
+            <td class="td font-serif">{{ a.chore.name }}</td>
+            <td class="td font-display font-medium">{{ a.user.display_name }}</td>
+            <td class="td tabular-nums font-display">{% if a.avg_score %}{{ a.avg_score|floatformat:1 }} <span class="text-grey text-xs">({{ a.n_ratings }})</span>{% else %}–{% endif %}</td>
             <td class="td">
               {% if a.user_id != user.id %}
-              <form method="post" class="flex gap-1 items-center">
+              <form method="post" class="flex gap-2 items-center">
                 {% csrf_token %}
                 <input type="hidden" name="assignment" value="{{ a.id }}">
-                <select name="score" class="input w-16 py-1">{% for s in "12345" %}<option>{{ s }}</option>{% endfor %}</select>
-                <input name="comment" placeholder="opmerking" class="input py-1 hidden lg:block">
-                <button class="btn btn-primary py-1">OK</button>
+                <select name="score" class="input w-20 py-1.5">{% for s in "12345" %}<option>{{ s }}</option>{% endfor %}</select>
+                <input name="comment" placeholder="Opmerking" class="input py-1.5 hidden lg:block">
+                <button class="btn btn-primary btn-sm">OK</button>
               </form>
-              {% else %}<span class="text-xs text-muted">jouw corvee</span>{% endif %}
+              {% else %}<span class="eyebrow">jouw corvee</span>{% endif %}
             </td>
           </tr>
-          {% empty %}<tr><td class="td text-muted" colspan="5">Nog niets te beoordelen.</td></tr>{% endfor %}
+          {% empty %}<tr><td class="td prose-serif" colspan="5">Nog niets te beoordelen.</td></tr>{% endfor %}
         </tbody>
       </table>
     </div>
   </section>
 
-  <section class="card">
-    <h2 class="section">🏆 Ranking</h2>
-    <ol class="space-y-2 text-sm">
+  <section class="card bg-peach-200">
+    <h2 class="section">Ranking</h2>
+    <ol class="space-y-3 font-serif text-lg">
       {% for r in ranking %}
       <li class="flex justify-between">
         <span>{{ forloop.counter }}. {{ r.user__first_name|default:r.user__username }}</span>
-        <span class="tabular-nums font-medium">{{ r.avg_score|floatformat:1 }} <span class="text-muted text-xs">({{ r.n_ratings }})</span></span>
+        <span class="tabular-nums font-display font-medium text-base">{{ r.avg_score|floatformat:1 }} <span class="text-grey-300/60 text-xs">({{ r.n_ratings }})</span></span>
       </li>
-      {% empty %}<li class="text-muted">Nog geen beoordelingen.</li>{% endfor %}
+      {% empty %}<li class="prose-serif">Nog geen beoordelingen.</li>{% endfor %}
     </ol>
   </section>
 </div>

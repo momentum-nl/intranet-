@@ -1,6 +1,6 @@
 # Momentum intranet
 
-Handige links, notificaties, pin of shame (meeste rode merges van de maand), corvee met rating, en picnic-voorkeuren. Django, zelfde opzet als de andere Momentum-apps.
+Handige links, notificaties, pin of shame (meeste rode merges van de maand), corvee met rating, en een anoniem boodschappenlijstje. Django, styling volgt momentumdigital.nl (Aeonik, Source Serif, perzik). Inloggen via Entra SSO (django-allauth, Momentum-tenant).
 
 ## Draaien
 
@@ -28,5 +28,4 @@ uv run pytest
 
 ## Nog niet
 
-- Entra SSO (nu Django-login). Zie vesting-werkbon-review voor de allauth-opzet.
 - Rode merges komen handmatig binnen via Beheer; een GitHub-webhook kan dat later vullen.

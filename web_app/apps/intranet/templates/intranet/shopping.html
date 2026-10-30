@@ -1,18 +1,19 @@
 {% extends "base.html" %}
 {% block title %}Boodschappenlijstje{% endblock %}
 {% block content %}
-<h1 class="text-2xl font-semibold mb-1">Boodschappenlijstje</h1>
-<p class="text-sm text-muted mb-6">Anoniem. Zet erop wat er mee moet.</p>
+<p class="eyebrow mb-3">Anoniem</p>
+<h1 class="page-title mb-3">Boodschappenlijstje</h1>
+<p class="prose-serif text-lg mb-10">Zet erop wat er mee moet.</p>
 <div class="grid md:grid-cols-3 gap-6">
-  <section class="card bg-warm-light border-warm">
+  <section class="card bg-peach-200">
     <h2 class="section">Toevoegen</h2>
-    <form method="post" class="space-y-3">
+    <form method="post" class="space-y-4">
       {% csrf_token %}
-      <label class="block text-sm">Artikel<input name="article" value="{{ form.article.value|default:'' }}" placeholder="Melk" class="input mt-1" required autofocus></label>
-      <label class="block text-sm">Aantal<input name="quantity" type="number" inputmode="numeric" min="1" step="1" value="{{ form.quantity.value|default:1 }}" class="input mt-1" required></label>
-      <label class="block text-sm">Opmerking<input name="note" class="input mt-1" placeholder="Optioneel"></label>
-      {% for e in form.errors.values %}<p class="text-danger text-xs">{{ e|striptags }}</p>{% endfor %}
-      <button class="btn btn-primary">Toevoegen</button>
+      <label class="block"><span class="eyebrow">Artikel</span><input name="article" value="{{ form.article.value|default:'' }}" placeholder="Melk" class="input mt-1.5" required autofocus></label>
+      <label class="block"><span class="eyebrow">Aantal</span><input name="quantity" type="number" inputmode="numeric" min="1" step="1" value="{{ form.quantity.value|default:1 }}" class="input mt-1.5" required></label>
+      <label class="block"><span class="eyebrow">Opmerking</span><input name="note" class="input mt-1.5" placeholder="Optioneel"></label>
+      {% for e in form.errors.values %}<p class="text-danger font-serif text-sm">{{ e|striptags }}</p>{% endfor %}
+      <button class="btn btn-primary">Toevoegen <span aria-hidden="true">→</span></button>
     </form>
   </section>
 
@@ -23,12 +24,12 @@
       <tbody>
         {% for i in items %}
         <tr>
-          <td class="td tabular-nums whitespace-nowrap">{{ i.quantity }}</td>
-          <td class="td font-medium">{{ i.article }}</td>
-          <td class="td text-muted">{{ i.note }}</td>
-          <td class="td text-right"><form method="post" action="{% url 'intranet:shopping_delete' i.pk %}">{% csrf_token %}<button class="text-xs text-muted hover:text-danger" title="Verwijderen">✕</button></form></td>
+          <td class="td tabular-nums whitespace-nowrap font-display font-medium">{{ i.quantity }}</td>
+          <td class="td font-serif text-base">{{ i.article }}</td>
+          <td class="td font-serif text-grey-300">{{ i.note }}</td>
+          <td class="td text-right"><form method="post" action="{% url 'intranet:shopping_delete' i.pk %}">{% csrf_token %}<button class="text-grey hover:text-danger" title="Verwijderen">✕</button></form></td>
         </tr>
-        {% empty %}<tr><td class="td text-muted" colspan="4">Nog niets. Wie begint?</td></tr>{% endfor %}
+        {% empty %}<tr><td class="td prose-serif" colspan="4">Nog niets. Wie begint?</td></tr>{% endfor %}
       </tbody>
     </table>
   </section>

@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
+<p class="eyebrow mb-3">Intranet</p>
+<h1 class="page-title mb-10">Hoi {{ user.first_name|default:user.display_name }}.</h1>
+
 {% if notifications %}
-<section class="mb-8 space-y-2">
+<section class="mb-10 space-y-3">
   {% for n in notifications %}
-  <div class="card py-3 {% if n.level == 'danger' %}border-danger bg-danger-light{% elif n.level == 'warning' %}border-warning bg-warm-light{% else %}border-primary/30 bg-primary-light{% endif %}">
-    <div class="flex items-baseline gap-3">
-      <strong class="font-display">{{ n.title }}</strong>
-      <span class="text-xs text-muted ml-auto">{{ n.published_at|date:"j M" }}</span>
+  <div class="rounded-2xl px-6 py-5 {% if n.level == 'danger' %}bg-danger-light{% elif n.level == 'warning' %}bg-sunset-50{% else %}bg-peach-50{% endif %}">
+    <div class="flex items-baseline gap-4">
+      <strong class="font-display font-medium text-lg">{{ n.title }}</strong>
+      <span class="eyebrow ml-auto">{{ n.published_at|date:"j M" }}</span>
     </div>
-    {% if n.body %}<p class="text-sm mt-1">{{ n.body|linebreaksbr }}</p>{% endif %}
+    {% if n.body %}<p class="prose-serif mt-1">{{ n.body|linebreaksbr }}</p>{% endif %}
   </div>
   {% endfor %}
 </section>
@@ -19,54 +22,50 @@
   <section class="md:col-span-2 card">
     <h2 class="section">Handige links</h2>
     {% if link_groups %}
-    <div class="grid sm:grid-cols-2 gap-5">
+    <div class="grid sm:grid-cols-2 gap-8">
       {% for category, links in link_groups %}
       <div>
-        <h3 class="text-xs font-semibold uppercase tracking-wide text-muted mb-2">{{ category }}</h3>
-        <ul class="space-y-1">
-          {% for l in links %}<li><a href="{{ l.url }}" target="_blank" rel="noopener" class="text-primary hover:underline">{{ l.title }}</a></li>{% endfor %}
+        <h3 class="eyebrow mb-3">{{ category }}</h3>
+        <ul class="space-y-2">
+          {% for l in links %}<li><a href="{{ l.url }}" target="_blank" rel="noopener" class="font-serif text-lg text-black hover:text-primary">{{ l.title }}</a></li>{% endfor %}
         </ul>
       </div>
       {% endfor %}
     </div>
-    {% else %}<p class="text-sm text-muted">Nog geen links. Voeg ze toe via Beheer.</p>{% endif %}
+    {% else %}<p class="prose-serif">Nog geen links. Voeg ze toe via Beheer.</p>{% endif %}
   </section>
 
-  <section class="card bg-secondary text-white border-secondary">
-    <h2 class="section text-white">📌 Pin of shame</h2>
-    <p class="text-xs text-white/60 mb-3">Meeste rode merges deze maand</p>
+  <section class="card bg-black text-white">
+    <h2 class="section text-white border-white">Pin of shame</h2>
+    <p class="eyebrow mb-4">Meeste rode merges deze maand</p>
     {% if shame %}
-      <p class="text-3xl font-display font-semibold">{{ shame.user.display_name }}</p>
-      <p class="text-white/70 text-sm">{{ shame.count }} rode merge{{ shame.count|pluralize }}</p>
+      <p class="font-display font-medium text-4xl leading-tight">{{ shame.user.display_name }}</p>
+      <p class="font-serif text-white/70 mt-1">{{ shame.count }} rode merge{{ shame.count|pluralize }}</p>
       {% if shame_rest %}
-      <ol class="mt-4 text-sm space-y-1 text-white/80">
+      <ol class="mt-6 font-serif space-y-1 text-white/80">
         {% for e in shame_rest %}<li>{{ forloop.counter|add:1 }}. {{ e.user.display_name }} <span class="text-white/50">({{ e.count }})</span></li>{% endfor %}
       </ol>
       {% endif %}
-    {% else %}<p class="text-sm text-white/70">Nog niemand. Hou het zo.</p>{% endif %}
+    {% else %}<p class="font-serif text-white/70">Nog niemand. Hou het zo.</p>{% endif %}
   </section>
 
   <section class="md:col-span-2 card">
-    <div class="flex items-baseline justify-between mb-3">
-      <h2 class="section mb-0">Corvee deze week</h2>
-      <a href="{% url 'intranet:corvee' %}" class="text-sm text-primary hover:underline">Schema & beoordelen →</a>
-    </div>
+    <h2 class="section">Corvee deze week</h2>
     {% if corvee %}
-    <ul class="divide-y divide-line">
-      {% for a in corvee %}<li class="py-2 flex justify-between text-sm"><span>{{ a.chore.name }}</span><span class="font-medium">{{ a.user.display_name }}</span></li>{% endfor %}
+    <ul class="divide-y divide-black/10">
+      {% for a in corvee %}<li class="py-3 flex justify-between font-serif text-lg"><span>{{ a.chore.name }}</span><span class="font-display font-medium text-base">{{ a.user.display_name }}</span></li>{% endfor %}
     </ul>
-    {% else %}<p class="text-sm text-muted">Geen corvee ingepland deze week.</p>{% endif %}
+    {% else %}<p class="prose-serif">Geen corvee ingepland deze week.</p>{% endif %}
+    <a href="{% url 'intranet:corvee' %}" class="link-arrow mt-6">Schema en beoordelen</a>
   </section>
 
-  <section class="card bg-warm-light border-warm">
-    <div class="flex items-baseline justify-between mb-3">
-      <h2 class="section mb-0">🧺 Boodschappenlijstje</h2>
-      <a href="{% url 'intranet:shopping' %}" class="text-sm text-primary hover:underline">Bekijken →</a>
-    </div>
+  <section class="card bg-peach-200">
+    <h2 class="section">Boodschappenlijstje</h2>
     {% if shopping %}
-    <ul class="text-sm space-y-1">{% for i in shopping|slice:":6" %}<li class="flex justify-between gap-2"><span>{{ i.article }}</span><span class="font-medium">{{ i.quantity }}</span></li>{% endfor %}</ul>
-    {% if shopping|length > 6 %}<p class="text-xs text-muted mt-2">+ {{ shopping|length|add:"-6" }} meer</p>{% endif %}
-    {% else %}<p class="text-sm text-muted">Lijstje is nog leeg.</p>{% endif %}
+    <ul class="font-serif text-lg space-y-1">{% for i in shopping|slice:":6" %}<li class="flex justify-between gap-2"><span>{{ i.article }}</span><span class="font-display font-medium text-base">{{ i.quantity }}</span></li>{% endfor %}</ul>
+    {% if shopping|length > 6 %}<p class="eyebrow mt-3">+ {{ shopping|length|add:"-6" }} meer</p>{% endif %}
+    {% else %}<p class="prose-serif">Lijstje is nog leeg.</p>{% endif %}
+    <a href="{% url 'intranet:shopping' %}" class="link-arrow mt-6">Bekijken</a>
   </section>
 </div>
 {% endblock %}

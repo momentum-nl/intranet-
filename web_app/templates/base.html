@@ -7,34 +7,42 @@
   <link rel="icon" href="{% static 'favicon.svg' %}">
   <link rel="stylesheet" href="{% static 'app.css' %}">
 </head>
-<body class="bg-canvas text-ink min-h-screen">
+<body class="bg-white text-black min-h-screen">
 {% block body %}
-  <header class="bg-surface border-b border-line">
-    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center gap-6">
-      <a href="{% url 'intranet:dashboard' %}" class="flex items-center gap-3">
-        <img src="{% static 'momentum-logo.svg' %}" alt="Momentum" class="h-5">
-        <span class="text-muted text-sm hidden sm:inline">intranet</span>
+  <header class="bg-white">
+    <div class="max-w-6xl mx-auto px-6 h-20 flex items-center gap-10">
+      <a href="{% url 'intranet:dashboard' %}" class="flex items-center">
+        <img src="{% static 'momentum-logo.svg' %}" alt="Momentum" class="h-7">
       </a>
       {% if user.is_authenticated %}
       {% with path=request.resolver_match.url_name %}
-      <nav class="flex gap-1 text-sm">
-        <a href="{% url 'intranet:dashboard' %}" class="px-3 py-1.5 rounded-lg {% if path == 'dashboard' %}bg-primary-light text-primary font-medium{% else %}text-muted hover:text-ink{% endif %}">Home</a>
-        <a href="{% url 'intranet:corvee' %}" class="px-3 py-1.5 rounded-lg {% if path == 'corvee' %}bg-primary-light text-primary font-medium{% else %}text-muted hover:text-ink{% endif %}">Corvee</a>
-        <a href="{% url 'intranet:shopping' %}" class="px-3 py-1.5 rounded-lg {% if path == 'shopping' %}bg-primary-light text-primary font-medium{% else %}text-muted hover:text-ink{% endif %}">Boodschappenlijstje</a>
+      <nav class="hidden sm:flex gap-8">
+        <a href="{% url 'intranet:dashboard' %}" class="nav-link {% if path == 'dashboard' %}is-active{% endif %}">Home</a>
+        <a href="{% url 'intranet:corvee' %}" class="nav-link {% if path == 'corvee' %}is-active{% endif %}">Corvee</a>
+        <a href="{% url 'intranet:shopping' %}" class="nav-link {% if path == 'shopping' %}is-active{% endif %}">Boodschappenlijstje</a>
       </nav>
       {% endwith %}
-      <div class="ml-auto flex items-center gap-3 text-sm text-muted">
-        <span class="hidden md:inline">{{ user.display_name }}</span>
-        {% if user.is_staff %}<a href="{% url 'admin:index' %}" class="hover:text-ink">Beheer</a>{% endif %}
-        <a href="{% url 'account_logout' %}" class="hover:text-ink">Uitloggen</a>
+      <div class="ml-auto flex items-center gap-6">
+        <span class="hidden md:inline font-serif text-grey-300">{{ user.display_name }}</span>
+        {% if user.is_staff %}<a href="{% url 'admin:index' %}" class="nav-link hidden sm:inline">Beheer</a>{% endif %}
+        <a href="{% url 'account_logout' %}" class="link-arrow">Uitloggen</a>
       </div>
       {% endif %}
     </div>
+    {% if user.is_authenticated %}
+    {% with path=request.resolver_match.url_name %}
+    <nav class="sm:hidden flex gap-6 px-6 pb-4">
+      <a href="{% url 'intranet:dashboard' %}" class="nav-link {% if path == 'dashboard' %}is-active{% endif %}">Home</a>
+      <a href="{% url 'intranet:corvee' %}" class="nav-link {% if path == 'corvee' %}is-active{% endif %}">Corvee</a>
+      <a href="{% url 'intranet:shopping' %}" class="nav-link {% if path == 'shopping' %}is-active{% endif %}">Boodschappen</a>
+    </nav>
+    {% endwith %}
+    {% endif %}
   </header>
-  <main class="max-w-6xl mx-auto px-4 py-8">
+  <main class="max-w-6xl mx-auto px-6 py-10">
     {% if messages %}
-      <div class="mb-6 space-y-2">
-        {% for m in messages %}<div class="card py-2 text-sm {% if m.tags == 'error' %}border-danger bg-danger-light{% else %}border-primary/30 bg-primary-light{% endif %}">{{ m }}</div>{% endfor %}
+      <div class="mb-8 space-y-2">
+        {% for m in messages %}<div class="rounded-2xl px-5 py-3 font-serif {% if m.tags == 'error' %}bg-danger-light text-danger{% else %}bg-sunset-50 text-black{% endif %}">{{ m }}</div>{% endfor %}
       </div>
     {% endif %}
     {% block content %}{% endblock %}
