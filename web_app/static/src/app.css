@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens - Momentum Digital (momentumdigital.nl), overgenomen uit momentum-coding-standard */
+@layer base {
+  :root {
+    --color-primary: 79 34 206;        /* Momentum Purple #4F22CE */
+    --color-primary-hover: 62 27 164;  /* #3E1BA4 */
+    --color-primary-light: 237 232 252;/* #EDE8FC */
+    --color-secondary: 28 43 30;       /* Momentum Dark Green #1C2B1E (logo) */
+    --color-secondary-light: 240 242 241;
+    --color-warm: 245 197 162;         /* Momentum Peach #F5C5A2 */
+    --color-warm-light: 251 238 228;   /* #FBEEE4 */
+    --color-danger: 220 53 69;
+    --color-danger-light: 253 236 238;
+    --color-success: 40 167 69;
+    --color-warning: 255 193 7;
+    --color-text-primary: 28 43 30;
+    --color-text-muted: 107 114 110;
+    --color-border: 222 226 230;
+    --color-bg-primary: 255 255 255;
+    --color-bg-secondary: 248 249 250;
+  }
+  body { @apply font-sans antialiased; }
+  h1, h2, h3 { @apply font-display; }
+}
+
+@layer components {
+  .card { @apply bg-surface border border-line rounded-xl p-5; }
+  .btn { @apply inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium border border-line bg-surface hover:bg-canvas; }
+  .btn-primary { @apply bg-primary text-white border-primary hover:bg-primary-hover; }
+  .input { @apply w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40; }
+  .tag { @apply inline-block rounded-full px-2 py-0.5 text-xs font-medium; }
+  .th { @apply text-left text-xs font-semibold text-muted uppercase tracking-wide px-3 py-2; }
+  .td { @apply px-3 py-2 text-sm border-t border-line align-top; }
+  .section { @apply text-lg font-semibold text-ink mb-3; }
+}

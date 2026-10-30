@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "intranet",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd web_app && uv run --env-file=../.env.local python manage.py runserver 8010"],
+      "port": 8010
+    }
+  ]
+}

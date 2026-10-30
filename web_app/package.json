@@ -1,0 +1,11 @@
+{
+  "name": "momentum-intranet",
+  "private": true,
+  "scripts": {
+    "build": "tailwindcss -i static/src/app.css -o static/dist/app.css --minify",
+    "dev": "tailwindcss -i static/src/app.css -o static/dist/app.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17"
+  }
+}

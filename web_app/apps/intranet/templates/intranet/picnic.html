@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Picnic{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-semibold mb-6">Picnic</h1>
+<div class="grid md:grid-cols-3 gap-6">
+  <section class="card bg-warm-light border-warm">
+    <h2 class="section">Mijn voorkeuren</h2>
+    <form method="post" class="space-y-3">
+      {% csrf_token %}
+      {% for f in form %}
+      <label class="block text-sm">{{ f.label }}
+        {% if f.field.widget.input_type == 'select' %}
+          <select name="{{ f.html_name }}" class="input mt-1">{% for val, label in f.field.choices %}<option value="{{ val }}" {% if f.value == val %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
+        {% else %}
+          <input name="{{ f.html_name }}" value="{{ f.value|default:'' }}" class="input mt-1">
+        {% endif %}
+        {% for e in f.errors %}<span class="text-danger text-xs">{{ e }}</span>{% endfor %}
+      </label>
+      {% endfor %}
+      <button class="btn btn-primary">Opslaan</button>
+    </form>
+  </section>
+
+  <section class="md:col-span-2 card">
+    <h2 class="section">Iedereen</h2>
+    <div class="flex gap-2 flex-wrap mb-4">{% for s in summary %}<span class="tag bg-primary-light text-primary">{{ s.label }} · {{ s.count }}</span>{% endfor %}</div>
+    <table class="w-full">
+      <thead><tr><th class="th">Wie</th><th class="th">Dieet</th><th class="th">Allergieën</th><th class="th">Favoriet</th><th class="th">Drankje</th></tr></thead>
+      <tbody>
+        {% for p in everyone %}
+        <tr><td class="td font-medium">{{ p.user.display_name }}</td><td class="td">{{ p.get_diet_display }}</td><td class="td">{{ p.allergies|default:"–" }}</td><td class="td">{{ p.favourite|default:"–" }}</td><td class="td">{{ p.drink|default:"–" }}</td></tr>
+        {% empty %}<tr><td class="td text-muted" colspan="5">Nog niemand.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+{% endblock %}

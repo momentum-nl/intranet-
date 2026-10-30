@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Corvee{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-semibold mb-6">Corvee</h1>
+<div class="grid md:grid-cols-3 gap-6">
+  <section class="md:col-span-2 space-y-6">
+    <div class="card">
+      <h2 class="section">Schema</h2>
+      <table class="w-full">
+        <thead><tr><th class="th">Week</th><th class="th">Taak</th><th class="th">Wie</th></tr></thead>
+        <tbody>
+          {% for a in upcoming %}
+          <tr class="{% if a.week_start == this_week %}bg-primary-light/50{% endif %}">
+            <td class="td whitespace-nowrap">{{ a.week_start|date:"j M" }}{% if a.week_start == this_week %} <span class="tag bg-primary text-white">nu</span>{% endif %}</td>
+            <td class="td">{{ a.chore.name }}</td>
+            <td class="td font-medium">{{ a.user.display_name }}</td>
+          </tr>
+          {% empty %}<tr><td class="td text-muted" colspan="3">Niets ingepland. Plan corvee in via Beheer.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2 class="section">Beoordelen (afgelopen weken)</h2>
+      <p class="text-sm text-muted mb-3">1 = ramp, 5 = brandschoon. Eigen corvee kun je niet beoordelen.</p>
+      <table class="w-full">
+        <thead><tr><th class="th">Week</th><th class="th">Taak</th><th class="th">Wie</th><th class="th">Gem.</th><th class="th">Jouw score</th></tr></thead>
+        <tbody>
+          {% for a in history %}
+          <tr>
+            <td class="td whitespace-nowrap">{{ a.week_start|date:"j M" }}</td>
+            <td class="td">{{ a.chore.name }}</td>
+            <td class="td font-medium">{{ a.user.display_name }}</td>
+            <td class="td tabular-nums">{% if a.avg_score %}{{ a.avg_score|floatformat:1 }} <span class="text-muted text-xs">({{ a.n_ratings }})</span>{% else %}–{% endif %}</td>
+            <td class="td">
+              {% if a.user_id != user.id %}
+              <form method="post" class="flex gap-1 items-center">
+                {% csrf_token %}
+                <input type="hidden" name="assignment" value="{{ a.id }}">
+                <select name="score" class="input w-16 py-1">{% for s in "12345" %}<option>{{ s }}</option>{% endfor %}</select>
+                <input name="comment" placeholder="opmerking" class="input py-1 hidden lg:block">
+                <button class="btn btn-primary py-1">OK</button>
+              </form>
+              {% else %}<span class="text-xs text-muted">jouw corvee</span>{% endif %}
+            </td>
+          </tr>
+          {% empty %}<tr><td class="td text-muted" colspan="5">Nog niets te beoordelen.</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="section">🏆 Ranking</h2>
+    <ol class="space-y-2 text-sm">
+      {% for r in ranking %}
+      <li class="flex justify-between">
+        <span>{{ forloop.counter }}. {{ r.user__first_name|default:r.user__username }}</span>
+        <span class="tabular-nums font-medium">{{ r.avg_score|floatformat:1 }} <span class="text-muted text-xs">({{ r.n_ratings }})</span></span>
+      </li>
+      {% empty %}<li class="text-muted">Nog geen beoordelingen.</li>{% endfor %}
+    </ol>
+  </section>
+</div>
+{% endblock %}

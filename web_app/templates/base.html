@@ -1,0 +1,44 @@
+{% load static %}<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Intranet{% endblock %} · Momentum</title>
+  <link rel="icon" href="{% static 'favicon.svg' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="{% static 'app.css' %}">
+</head>
+<body class="bg-canvas text-ink min-h-screen">
+  <header class="bg-surface border-b border-line">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center gap-6">
+      <a href="{% url 'intranet:dashboard' %}" class="flex items-center gap-3">
+        <img src="{% static 'momentum-logo.svg' %}" alt="Momentum" class="h-5">
+        <span class="text-muted text-sm hidden sm:inline">intranet</span>
+      </a>
+      {% if user.is_authenticated %}
+      {% with path=request.resolver_match.url_name %}
+      <nav class="flex gap-1 text-sm">
+        <a href="{% url 'intranet:dashboard' %}" class="px-3 py-1.5 rounded-lg {% if path == 'dashboard' %}bg-primary-light text-primary font-medium{% else %}text-muted hover:text-ink{% endif %}">Home</a>
+        <a href="{% url 'intranet:corvee' %}" class="px-3 py-1.5 rounded-lg {% if path == 'corvee' %}bg-primary-light text-primary font-medium{% else %}text-muted hover:text-ink{% endif %}">Corvee</a>
+        <a href="{% url 'intranet:picnic' %}" class="px-3 py-1.5 rounded-lg {% if path == 'picnic' %}bg-primary-light text-primary font-medium{% else %}text-muted hover:text-ink{% endif %}">Picnic</a>
+      </nav>
+      {% endwith %}
+      <div class="ml-auto flex items-center gap-3 text-sm text-muted">
+        <span class="hidden md:inline">{{ user.display_name }}</span>
+        {% if user.is_staff %}<a href="{% url 'admin:index' %}" class="hover:text-ink">Beheer</a>{% endif %}
+        <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="hover:text-ink">Uitloggen</button></form>
+      </div>
+      {% endif %}
+    </div>
+  </header>
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    {% if messages %}
+      <div class="mb-6 space-y-2">
+        {% for m in messages %}<div class="card py-2 text-sm {% if m.tags == 'error' %}border-danger bg-danger-light{% else %}border-primary/30 bg-primary-light{% endif %}">{{ m }}</div>{% endfor %}
+      </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
