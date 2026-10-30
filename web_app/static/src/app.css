@@ -50,7 +50,7 @@
   position: relative;
   background-color: rgb(var(--color-warm-hero));
   background-image:
-    radial-gradient(circle at 8% 30%, rgb(255 255 255 / 0.3), transparent 45%),
+    radial-gradient(circle at calc(100% - 44px) 434px, rgb(255 255 255 / 0.32), transparent 42%),
     radial-gradient(circle at 15% 100%, rgb(var(--color-primary) / 0.08), transparent 50%);
 }
 .hero__vector {
@@ -68,9 +68,9 @@
 }
 @media (min-width: 768px) {
   .hero__lottie {
-    width: 1800px;
-    height: 1800px;
-    top: -450px;
+    width: 2600px;
+    height: 2600px;
+    top: -866px;
     left: calc(100% - 44px);
     transform: translateX(-50%);
   }
