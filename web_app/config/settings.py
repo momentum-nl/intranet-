@@ -95,7 +95,11 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static" / "dist", BASE_DIR / "static" / "images"]
+STATICFILES_DIRS = [
+    BASE_DIR / "static" / "dist",
+    BASE_DIR / "static" / "images",
+    ("fonts", BASE_DIR / "static" / "fonts"),
+]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},

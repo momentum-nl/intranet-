@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Intranet{% endblock %} · Momentum</title>
   <link rel="icon" href="{% static 'favicon.svg' %}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="{% static 'app.css' %}">
 </head>
 <body class="bg-canvas text-ink min-h-screen">
+{% block body %}
   <header class="bg-surface border-b border-line">
     <div class="max-w-6xl mx-auto px-4 h-14 flex items-center gap-6">
       <a href="{% url 'intranet:dashboard' %}" class="flex items-center gap-3">
@@ -40,5 +39,6 @@
     {% endif %}
     {% block content %}{% endblock %}
   </main>
+{% endblock %}
 </body>
 </html>

@@ -1,24 +1,42 @@
 {% extends "base.html" %}
-{% load socialaccount %}
+{% load static socialaccount %}
 {% block title %}Inloggen{% endblock %}
-{% block content %}
-<div class="max-w-sm mx-auto mt-12">
-  <div class="card bg-warm-light border-warm">
-    <h1 class="text-2xl font-semibold mb-4">Inloggen</h1>
-    {% if sso_enabled %}
-      <a href="{% provider_login_url 'microsoft' %}" class="btn btn-primary w-full justify-center py-2">Inloggen met Microsoft</a>
-      <details class="mt-6">
-        <summary class="text-xs text-muted cursor-pointer">Beheer-login met wachtwoord</summary>
-    {% endif %}
-    <form method="post" action="{% url 'account_login' %}" class="space-y-3 {% if sso_enabled %}mt-3{% endif %}">
-      {% csrf_token %}
-      {% for e in form.non_field_errors %}<p class="text-danger text-sm">{{ e }}</p>{% endfor %}
-      <label class="block text-sm">Gebruikersnaam of e-mail<input name="login" value="{{ form.login.value|default:'' }}" class="input mt-1" autocomplete="username" required></label>
-      <label class="block text-sm">Wachtwoord<input name="password" type="password" class="input mt-1" autocomplete="current-password" required></label>
-      {% if redirect_field_value %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">{% endif %}
-      <button class="btn {% if not sso_enabled %}btn-primary{% endif %} w-full justify-center">Inloggen</button>
-    </form>
-    {% if sso_enabled %}</details>{% endif %}
-  </div>
+{% block body %}
+<div class="hero-rings min-h-screen flex flex-col text-deep">
+  <header class="px-6 sm:px-10 py-6">
+    <img src="{% static 'momentum-logo.svg' %}" alt="Momentum" class="h-6">
+  </header>
+  <main class="flex-1 flex items-center justify-center px-6 pb-16">
+    <div class="w-full max-w-2xl text-center">
+      <h1 class="font-display leading-[1.05] text-5xl sm:text-7xl tracking-tight">
+        <span class="block font-normal">Hoi collega,</span>
+        <span class="block font-medium">welkom terug.</span>
+      </h1>
+      <p class="font-serif text-xl sm:text-2xl mt-8 text-deep/80">Links, corvee, het boodschappenlijstje en de pin of shame. Op één plek.</p>
+
+      {% if form.non_field_errors %}
+        <div class="mt-8 inline-block rounded-xl bg-white/70 px-4 py-2 text-sm text-danger">{% for e in form.non_field_errors %}{{ e }}{% endfor %}</div>
+      {% endif %}
+
+      {% if sso_enabled %}
+        <a href="{% provider_login_url 'microsoft' %}" class="btn-pill mt-10">
+          Inloggen met Microsoft
+          <svg width="18" height="16" viewBox="0 0 18 16" fill="none" aria-hidden="true"><path d="M10.5 0.5L9.4275 1.54475L15.1125 7.25H0V8.75H15.1125L9.4275 14.4298L10.5 15.5L18 8L10.5 0.5Z" fill="currentColor"/></svg>
+        </a>
+        <details class="mt-10 mx-auto max-w-xs text-left">
+          <summary class="text-sm text-deep/60 text-center cursor-pointer hover:text-deep">Beheer-login met wachtwoord</summary>
+      {% else %}
+        <div class="mt-10 mx-auto max-w-xs text-left">
+      {% endif %}
+          <form method="post" action="{% url 'account_login' %}" class="mt-4 space-y-3 rounded-2xl bg-white/70 backdrop-blur p-5">
+            {% csrf_token %}
+            <label class="block text-sm">Gebruikersnaam of e-mail<input name="login" value="{{ form.login.value|default:'' }}" class="input mt-1 bg-white" autocomplete="username" required></label>
+            <label class="block text-sm">Wachtwoord<input name="password" type="password" class="input mt-1 bg-white" autocomplete="current-password" required></label>
+            {% if redirect_field_value %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">{% endif %}
+            <button class="btn btn-primary w-full justify-center">Inloggen</button>
+          </form>
+      {% if sso_enabled %}</details>{% else %}</div>{% endif %}
+    </div>
+  </main>
 </div>
 {% endblock %}

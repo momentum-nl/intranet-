@@ -7,7 +7,8 @@ module.exports = {
       colors: {
         primary: { DEFAULT: v("primary"), hover: v("primary-hover"), light: v("primary-light") },
         secondary: { DEFAULT: v("secondary"), light: v("secondary-light") },
-        warm: { DEFAULT: v("warm"), light: v("warm-light") },
+        warm: { DEFAULT: v("warm"), light: v("warm-light"), hero: v("warm-hero") },
+        deep: v("deep"),
         danger: { DEFAULT: v("danger"), light: v("danger-light") },
         success: v("success"),
         warning: v("warning"),
@@ -18,8 +19,9 @@ module.exports = {
         surface: v("bg-primary"),
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        display: ["Poppins", "Inter", "sans-serif"],
+        sans: ["Aeonik", "Inter", "system-ui", "sans-serif"],
+        display: ["Aeonik", "Inter", "system-ui", "sans-serif"],
+        serif: ["SourceSerif4", "Georgia", "serif"],
       },
     },
   },
