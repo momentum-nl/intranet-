@@ -23,7 +23,7 @@ class Command(BaseCommand):
         Notification.objects.get_or_create(
             title="Welkom op het intranet",
             defaults={
-                "body": "Links, notificaties, pin of shame, corvee en picnic op één plek.",
+                "body": "Links, notificaties, pin of shame, corvee en het boodschappenlijstje op één plek.",
                 "published_at": timezone.now(),
             },
         )

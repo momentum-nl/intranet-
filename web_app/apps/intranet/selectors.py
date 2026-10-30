@@ -11,8 +11,8 @@ from apps.intranet.models import (
     ChoreAssignment,
     Link,
     Notification,
-    PicnicPreference,
     RedMerge,
+    ShoppingItem,
 )
 from apps.users.models import User
 
@@ -94,17 +94,5 @@ def corvee_ranking() -> list[dict]:
     return list(rows)
 
 
-def picnic_summary() -> list[dict]:
-    rows = (
-        PicnicPreference.objects.values("diet")
-        .annotate(count=Count("id"))
-        .order_by("-count")
-    )
-    labels = dict(PicnicPreference.Diet.choices)
-    return [{"label": labels[r["diet"]], "count": r["count"]} for r in rows]
-
-
-def picnic_preferences() -> list[PicnicPreference]:
-    return list(
-        PicnicPreference.objects.select_related("user").order_by("user__username")
-    )
+def shopping_items() -> list[ShoppingItem]:
+    return list(ShoppingItem.objects.all())

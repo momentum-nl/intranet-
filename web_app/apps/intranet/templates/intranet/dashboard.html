@@ -60,12 +60,13 @@
 
   <section class="card bg-warm-light border-warm">
     <div class="flex items-baseline justify-between mb-3">
-      <h2 class="section mb-0">🧺 Picnic</h2>
-      <a href="{% url 'intranet:picnic' %}" class="text-sm text-primary hover:underline">Mijn voorkeuren →</a>
+      <h2 class="section mb-0">🧺 Boodschappenlijstje</h2>
+      <a href="{% url 'intranet:shopping' %}" class="text-sm text-primary hover:underline">Bekijken →</a>
     </div>
-    {% if picnic %}
-    <ul class="text-sm space-y-1">{% for p in picnic %}<li class="flex justify-between"><span>{{ p.label }}</span><span class="font-medium">{{ p.count }}</span></li>{% endfor %}</ul>
-    {% else %}<p class="text-sm text-muted">Nog geen voorkeuren doorgegeven.</p>{% endif %}
+    {% if shopping %}
+    <ul class="text-sm space-y-1">{% for i in shopping|slice:":6" %}<li class="flex justify-between gap-2"><span>{{ i.article }}</span><span class="font-medium">{{ i.quantity }}</span></li>{% endfor %}</ul>
+    {% if shopping|length > 6 %}<p class="text-xs text-muted mt-2">+ {{ shopping|length|add:"-6" }} meer</p>{% endif %}
+    {% else %}<p class="text-sm text-muted">Lijstje is nog leeg.</p>{% endif %}
   </section>
 </div>
 {% endblock %}

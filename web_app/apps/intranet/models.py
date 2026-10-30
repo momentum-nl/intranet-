@@ -96,21 +96,18 @@ class ChoreRating(models.Model):
         return f"{self.assignment} · {self.score}/5"
 
 
-class PicnicPreference(models.Model):
-    class Diet(models.TextChoices):
-        ALLES = "alles", "Alles"
-        VEGETARISCH = "vegetarisch", "Vegetarisch"
-        VEGAN = "vegan", "Vegan"
-        HALAL = "halal", "Halal"
-        GLUTENVRIJ = "glutenvrij", "Glutenvrij"
+class ShoppingItem(models.Model):
+    """Anoniem boodschappenlijstje."""
 
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="picnic"
+    article = models.CharField("Artikel", max_length=100)
+    quantity = models.PositiveIntegerField(
+        "Aantal", default=1, validators=[MinValueValidator(1)]
     )
-    diet = models.CharField(max_length=20, choices=Diet.choices, default=Diet.ALLES)
-    allergies = models.CharField(max_length=200, blank=True)
-    favourite = models.CharField("Favoriet", max_length=200, blank=True)
-    drink = models.CharField("Drankje", max_length=100, blank=True)
+    note = models.CharField("Opmerking", max_length=200, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["created_at"]
 
     def __str__(self) -> str:
-        return f"{self.user} · {self.get_diet_display()}"
+        return f"{self.quantity}x {self.article}"

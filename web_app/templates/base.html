@@ -21,7 +21,7 @@
       <nav class="flex gap-1 text-sm">
         <a href="{% url 'intranet:dashboard' %}" class="px-3 py-1.5 rounded-lg {% if path == 'dashboard' %}bg-primary-light text-primary font-medium{% else %}text-muted hover:text-ink{% endif %}">Home</a>
         <a href="{% url 'intranet:corvee' %}" class="px-3 py-1.5 rounded-lg {% if path == 'corvee' %}bg-primary-light text-primary font-medium{% else %}text-muted hover:text-ink{% endif %}">Corvee</a>
-        <a href="{% url 'intranet:picnic' %}" class="px-3 py-1.5 rounded-lg {% if path == 'picnic' %}bg-primary-light text-primary font-medium{% else %}text-muted hover:text-ink{% endif %}">Picnic</a>
+        <a href="{% url 'intranet:shopping' %}" class="px-3 py-1.5 rounded-lg {% if path == 'shopping' %}bg-primary-light text-primary font-medium{% else %}text-muted hover:text-ink{% endif %}">Boodschappenlijstje</a>
       </nav>
       {% endwith %}
       <div class="ml-auto flex items-center gap-3 text-sm text-muted">

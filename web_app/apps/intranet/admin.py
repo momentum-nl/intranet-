@@ -6,8 +6,8 @@ from apps.intranet.models import (
     ChoreRating,
     Link,
     Notification,
-    PicnicPreference,
     RedMerge,
+    ShoppingItem,
 )
 
 
@@ -48,4 +48,4 @@ class ChoreAssignmentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ChoreRating)
-admin.site.register(PicnicPreference)
+admin.site.register(ShoppingItem)

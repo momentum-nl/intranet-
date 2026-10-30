@@ -1,10 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
 from apps.intranet import selectors, services
-from apps.intranet.forms import ChoreRatingForm, PicnicPreferenceForm
-from apps.intranet.models import ChoreAssignment, PicnicPreference
+from apps.intranet.forms import ChoreRatingForm, ShoppingItemForm
+from apps.intranet.models import ChoreAssignment, ShoppingItem
 
 
 @login_required
@@ -19,7 +20,7 @@ def dashboard(request):
             "shame": shame[0] if shame else None,
             "shame_rest": shame[1:],
             "corvee": selectors.corvee_schedule(weeks=1),
-            "picnic": selectors.picnic_summary(),
+            "shopping": selectors.shopping_items(),
         },
     )
 
@@ -56,20 +57,20 @@ def corvee(request):
 
 
 @login_required
-def picnic(request):
-    pref = PicnicPreference.objects.filter(user=request.user).first()
-    form = PicnicPreferenceForm(request.POST or None, instance=pref)
+def shopping(request):
+    form = ShoppingItemForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
-        form.instance.user = request.user
         form.save()
-        messages.success(request, "Voorkeuren opgeslagen.")
-        return redirect("intranet:picnic")
+        return redirect("intranet:shopping")
     return render(
         request,
-        "intranet/picnic.html",
-        {
-            "form": form,
-            "summary": selectors.picnic_summary(),
-            "everyone": selectors.picnic_preferences(),
-        },
+        "intranet/shopping.html",
+        {"form": form, "items": selectors.shopping_items()},
     )
+
+
+@login_required
+@require_POST
+def shopping_delete(request, pk: int):
+    get_object_or_404(ShoppingItem, pk=pk).delete()
+    return redirect("intranet:shopping")

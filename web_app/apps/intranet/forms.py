@@ -1,18 +1,12 @@
 from django import forms
 
-from apps.intranet.models import PicnicPreference
+from apps.intranet.models import ShoppingItem
 
 
-class PicnicPreferenceForm(forms.ModelForm):
+class ShoppingItemForm(forms.ModelForm):
     class Meta:
-        model = PicnicPreference
-        fields = ["diet", "allergies", "favourite", "drink"]
-        labels = {
-            "diet": "Dieet",
-            "allergies": "Allergieën",
-            "favourite": "Wat moet er zeker bij?",
-            "drink": "Drankje",
-        }
+        model = ShoppingItem
+        fields = ["article", "quantity", "note"]
 
 
 class ChoreRatingForm(forms.Form):
