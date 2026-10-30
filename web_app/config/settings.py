@@ -131,7 +131,7 @@ SOCIALACCOUNT_PROVIDERS = {
                 # Alleen de Momentum-tenant; andere Entra-accounts weigert Entra zelf.
                 "settings": {
                     "tenant": os.getenv(
-                        "AZURE_AD_TENANT_ID", "350700b6-aca3-461f-b5fe-54d772819922"
+                        "AZURE_AD_TENANT_ID", "eef8b1c0-cb4e-48ef-b0b4-e42861e9e6a1"
                     )
                 },
             }
