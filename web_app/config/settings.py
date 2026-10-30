@@ -1,7 +1,7 @@
 """Django settings voor het Momentum intranet.
 
 Zelfde opzet als het Momentum-skelet (scalar-cpq / vesting-werkbon-review),
-zonder SSO: Django-auth volstaat voor de basis.
+met Entra-SSO via django-allauth (Momentum-tenant) en Django-login als fallback.
 """
 
 import os
@@ -32,9 +32,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "apps.users",
     "apps.intranet",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.microsoft",
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -43,6 +50,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -59,6 +67,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "apps.users.context_processors.sso",
             ],
         },
     },
@@ -75,6 +84,11 @@ DATABASES = {
 
 AUTH_USER_MODEL = "users.User"
 
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
 LANGUAGE_CODE = "nl"
 TIME_ZONE = "Europe/Amsterdam"
 USE_I18N = True
@@ -90,9 +104,42 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_URL = "/login/"
+LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/login/"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
+
+# django-allauth: Microsoft Entra ID SSO (Momentum-tenant) + gebruikersnaam/wachtwoord
+# als fallback voor beheer. Geen zelfregistratie; SSO maakt het account aan.
+ACCOUNT_ADAPTER = "apps.users.adapters.AccountAdapter"
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*"]
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_LOGOUT_ON_GET = True
+SOCIALACCOUNT_ADAPTER = "apps.users.adapters.SocialAccountAdapter"
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+AZURE_AD_SSO_CLIENT_ID = os.getenv("AZURE_AD_SSO_CLIENT_ID", "")
+SOCIALACCOUNT_PROVIDERS = {
+    "microsoft": {
+        "APPS": [
+            {
+                "client_id": AZURE_AD_SSO_CLIENT_ID,
+                "secret": os.getenv("AZURE_AD_SSO_CLIENT_SECRET", ""),
+                # Alleen de Momentum-tenant; andere Entra-accounts weigert Entra zelf.
+                "settings": {
+                    "tenant": os.getenv(
+                        "AZURE_AD_TENANT_ID", "350700b6-aca3-461f-b5fe-54d772819922"
+                    )
+                },
+            }
+        ],
+        "SCOPE": ["openid", "profile", "email", "User.Read"],
+        "VERIFIED_EMAIL": True,
+    }
+}
 
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

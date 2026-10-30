@@ -27,7 +27,7 @@
       <div class="ml-auto flex items-center gap-3 text-sm text-muted">
         <span class="hidden md:inline">{{ user.display_name }}</span>
         {% if user.is_staff %}<a href="{% url 'admin:index' %}" class="hover:text-ink">Beheer</a>{% endif %}
-        <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="hover:text-ink">Uitloggen</button></form>
+        <a href="{% url 'account_logout' %}" class="hover:text-ink">Uitloggen</a>
       </div>
       {% endif %}
     </div>

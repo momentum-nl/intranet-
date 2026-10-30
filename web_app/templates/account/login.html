@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+{% block title %}Inloggen{% endblock %}
+{% block content %}
+<div class="max-w-sm mx-auto mt-12">
+  <div class="card bg-warm-light border-warm">
+    <h1 class="text-2xl font-semibold mb-4">Inloggen</h1>
+    {% if sso_enabled %}
+      <a href="{% provider_login_url 'microsoft' %}" class="btn btn-primary w-full justify-center py-2">Inloggen met Microsoft</a>
+      <details class="mt-6">
+        <summary class="text-xs text-muted cursor-pointer">Beheer-login met wachtwoord</summary>
+    {% endif %}
+    <form method="post" action="{% url 'account_login' %}" class="space-y-3 {% if sso_enabled %}mt-3{% endif %}">
+      {% csrf_token %}
+      {% for e in form.non_field_errors %}<p class="text-danger text-sm">{{ e }}</p>{% endfor %}
+      <label class="block text-sm">Gebruikersnaam of e-mail<input name="login" value="{{ form.login.value|default:'' }}" class="input mt-1" autocomplete="username" required></label>
+      <label class="block text-sm">Wachtwoord<input name="password" type="password" class="input mt-1" autocomplete="current-password" required></label>
+      {% if redirect_field_value %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">{% endif %}
+      <button class="btn {% if not sso_enabled %}btn-primary{% endif %} w-full justify-center">Inloggen</button>
+    </form>
+    {% if sso_enabled %}</details>{% endif %}
+  </div>
+</div>
+{% endblock %}
