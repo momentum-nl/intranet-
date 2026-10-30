@@ -50,8 +50,8 @@
   position: relative;
   background-color: rgb(var(--color-warm-hero));
   background-image:
-    radial-gradient(circle at 44px 434px, rgb(255 255 255 / 0.28), transparent 40%),
-    radial-gradient(circle at 90% 100%, rgb(var(--color-primary) / 0.08), transparent 50%);
+    radial-gradient(circle at calc(100% - 44px) 50%, rgb(255 255 255 / 0.28), transparent 40%),
+    radial-gradient(circle at 10% 100%, rgb(var(--color-primary) / 0.08), transparent 50%);
 }
 .hero__vector {
   position: absolute;
@@ -68,9 +68,12 @@
 }
 @media (min-width: 768px) {
   .hero__lottie {
-    top: -140px;
-    left: 44px;
-    transform: translateX(-50%);
+    height: 100%;
+    width: auto;
+    aspect-ratio: 1;
+    top: 50%;
+    left: calc(100% - 44px);
+    transform: translate(-50%, -50%);
   }
 }
 .btn-pill {
