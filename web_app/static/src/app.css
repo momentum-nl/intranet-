@@ -47,7 +47,9 @@
 /* Loginpagina: perzik-hero met de cirkels van momentumdigital.nl */
 .hero-rings {
   background-color: rgb(var(--color-warm-hero));
-  background-image: repeating-radial-gradient(circle at 88% 28%, transparent 0 56px, rgb(var(--color-deep) / 0.09) 56px 57px);
+  background-image:
+    radial-gradient(circle at 85% 20%, rgb(255 255 255 / 0.45), transparent 45%),
+    radial-gradient(circle at 10% 90%, rgb(var(--color-primary) / 0.12), transparent 50%);
 }
 .btn-pill {
   @apply inline-flex items-center gap-3 rounded-full bg-primary text-white font-medium text-lg pl-6 pr-5 py-3 transition-colors duration-300 hover:bg-deep;
