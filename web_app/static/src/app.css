@@ -45,12 +45,27 @@
 }
 
 /* Loginpagina: perzik-hero met de cirkels van momentumdigital.nl */
-.hero-rings {
+.hero {
+  position: relative;
+  overflow: hidden;
   background-color: rgb(var(--color-warm-hero));
-  background-image:
-    radial-gradient(circle at 85% 20%, rgb(255 255 255 / 0.45), transparent 45%),
-    radial-gradient(circle at 10% 90%, rgb(var(--color-primary) / 0.12), transparent 50%);
 }
+.hero__rings {
+  position: absolute;
+  --size: max(76vw, 720px);
+  width: var(--size);
+  height: var(--size);
+  left: calc(68% - var(--size) / 2);
+  top: calc(45% - var(--size) / 2);
+  pointer-events: none;
+}
+.hero__cta {
+  @apply inline-flex items-center gap-4 font-display font-medium text-2xl sm:text-[28px];
+}
+.hero__cta-icon {
+  @apply inline-flex items-center justify-center w-11 h-11 rounded-full border border-current transition-transform duration-300;
+}
+.hero__cta:hover .hero__cta-icon { transform: translateX(6px); }
 .btn-pill {
   @apply inline-flex items-center gap-3 rounded-full bg-primary text-white font-medium text-lg pl-6 pr-5 py-3 transition-colors duration-300 hover:bg-deep;
 }
