@@ -68,9 +68,9 @@
 }
 @media (min-width: 768px) {
   .hero__lottie {
-    width: 1400px;
-    height: 1400px;
-    top: -220px;
+    width: 1800px;
+    height: 1800px;
+    top: -450px;
     left: calc(100% - 44px);
     transform: translateX(-50%);
   }
