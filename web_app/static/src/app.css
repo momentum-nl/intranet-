@@ -45,13 +45,30 @@
 }
 
 /* Loginpagina: perzik-hero met de cirkels van momentumdigital.nl */
-.hero-rings {
+/* Hero zoals s-main-hero op momentumdigital.nl: vlak perzik, Lottie-ringen rechts half buiten beeld. */
+.hero {
+  position: relative;
   background-color: rgb(var(--color-warm-hero));
-  background-image:
-    radial-gradient(circle at 88% 28%, rgb(255 255 255 / 0.45), transparent 40%),
-    radial-gradient(circle at 12% 100%, rgb(var(--color-primary) / 0.14), transparent 55%),
-    radial-gradient(circle at 60% 125%, rgb(var(--color-deep) / 0.1), transparent 60%),
-    repeating-radial-gradient(circle at 88% 28%, transparent 0 190px, rgb(var(--color-deep) / 0.07) 190px 191px);
+}
+.hero__vector {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.hero__lottie {
+  position: absolute;
+  width: 1148px;
+  height: 1148px;
+  left: 58px;
+  top: 218px;
+}
+@media (min-width: 768px) {
+  .hero__lottie {
+    top: -140px;
+    left: calc(100% - 44px);
+    transform: translateX(-50%);
+  }
 }
 .btn-pill {
   @apply inline-flex items-center gap-3 rounded-full bg-primary text-white font-medium text-lg pl-6 pr-5 py-3 transition-colors duration-300 hover:bg-deep;

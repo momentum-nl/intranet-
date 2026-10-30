@@ -99,6 +99,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static" / "dist",
     BASE_DIR / "static" / "images",
     ("fonts", BASE_DIR / "static" / "fonts"),
+    ("vendor", BASE_DIR / "static" / "vendor"),
 ]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STORAGES = {
